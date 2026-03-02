@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="FirstDynamicWebAppTomcat">
+    <output-path>$PROJECT_DIR$/out/artifacts/FirstDynamicWebAppTomcat</output-path>
+    <root id="root">
+      <element id="module-output" name="FirstDynamicWebAppTomcat" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/web" />
+    </root>
+  </artifact>
+</component>
