@@ -12,22 +12,48 @@ import java.io.PrintWriter;
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet
 {
+    // data corruption but for learning purpose here
+    private String storedName;
+    private String storedEmail;
+    private String storedCity;
+
+    // do post method for sending new data
     @Override
     protected void doPost(HttpServletRequest request , HttpServletResponse response) throws ServletException, IOException
     {
         // on signing up the servlet would do this
 
         // getting the request
-       String name= request.getParameter("username");
-       String email= request.getParameter("email");
-       String city=  request.getParameter("city");
+        storedName= request.getParameter("username");
+       storedEmail= request.getParameter("email");
+        storedCity=  request.getParameter("city");
 
        // responding to the request
-       PrintWriter writer= response.getWriter();
-       writer.println("Hello "+name);
-       writer.println("I know you are from "+city);
-       writer.println("And this is your "+email);
+       response.getWriter().println("user registered!!");
+    }
 
-       writer.close();
+    // do get method for retrieving the data
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+
+
+        String searchName=req.getParameter("searchName");
+        String searchEmail=req.getParameter("searchEmail");
+        String searchCity=req.getParameter("searchCity");
+
+        if(storedName != null &&
+                storedEmail != null &&
+                storedCity != null && searchName.equals(storedName) &&
+                searchCity.equals(storedCity) &&
+                searchEmail.equals(storedEmail))
+        {
+            resp.getWriter().println("user found");
+        }
+        else
+        {
+            resp.getWriter().println("user not found");
+        }
     }
 }
