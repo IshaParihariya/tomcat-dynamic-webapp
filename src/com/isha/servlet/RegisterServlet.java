@@ -10,6 +10,10 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
+import java.sql.DriverManager;
+
+import static java.lang.Class.forName;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet
@@ -31,7 +35,40 @@ public class RegisterServlet extends HttpServlet
         String storedEmail= request.getParameter("email");
         String storedCity=  request.getParameter("city");
 
-       // responding to the request
+
+        // connectiong to the database and storing these there
+try {
+    // this loads the MySQL JDBC driver.
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    // Connection
+    Connection con = DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/tomcatregistrationdb",
+            "root",
+            "Lovealarm@123"
+    );
+
+    // query
+    // username, email, and city must match the column names in your database table, not the servlet variable names.
+    String query = "INSERT INTO registrationdata(username,email,city) VALUES(?,?,?)";
+    // PreparedStaement for safety
+    PreparedStatement pstmt = con.prepareStatement(query);
+    // storing the data
+    pstmt.setString(1, storedName);
+    pstmt.setString(2, storedEmail);
+    pstmt.setString(3, storedCity);
+    // updating
+    pstmt.executeUpdate();//runs every time someone submits the form
+    // closing the PrepareStatement
+    pstmt.close();
+    // closing the connection
+    con.close();
+}
+catch (Exception e)
+{
+    e.printStackTrace();//Print the error details so the developer can debug the problem.
+}
+
+        // responding to the request
        //response.getWriter().println("user registered!!");
 
         //redirecting to the jsp file registrationsuccess
@@ -53,6 +90,7 @@ public class RegisterServlet extends HttpServlet
 
 
         //  Create session for this user
+       /*
         HttpSession session = request.getSession();
 
         // Store data inside this user's session
@@ -60,8 +98,10 @@ public class RegisterServlet extends HttpServlet
         session.setAttribute("storedEmail", storedEmail);
         session.setAttribute("storedCity", storedCity);
 
-
+*/
         response.sendRedirect("/FirstDynamicWebAppTomcat/registrationsuccess.jsp");
+
+
 
     }
 
